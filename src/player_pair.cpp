@@ -72,10 +72,8 @@ namespace c4
 	{
 		auto x_color = c4::color::colored_str(c4::color::const_colors::red);
 		auto o_color = c4::color::colored_str(c4::color::const_colors::green);
-		std::string x = "[X]";
-		std::string o = "[O]";
-		x_color.colorize_str(x);
-		o_color.colorize_str(o);
+		std::string x = x_color.colorize_str("[X]");
+		std::string o = o_color.colorize_str("[O]");
 		std::cout
 			<< "Hello "
 			<< names.first

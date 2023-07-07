@@ -40,6 +40,7 @@ namespace c4::color
 		explicit colored_str(const rgb&);
 		explicit colored_str(int);
 		void colorize_str(std::string&) const;
+		std::string colorize_str(const char*) const;
 		static void color_prompt();
 	};
 

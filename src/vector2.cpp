@@ -15,6 +15,4 @@ namespace c4
 	{
 		return y_;
 	}
-
-
 }

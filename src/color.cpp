@@ -6,6 +6,7 @@
 #include <ranges>
 #include <sstream>
 #include <ostream>
+#include <string>
 
 namespace c4::color
 {
@@ -102,6 +103,18 @@ namespace c4::color
 			new_str.append(reset_code_);
 			str = std::move(new_str);
 		}
+	}
+
+	std::string colored_str::colorize_str(const char* str) const
+	{
+		if(set_code_)
+		{
+			std::string new_str(complete_code_);
+			new_str.append(str);
+			new_str.append(reset_code_);
+			return new_str;
+		}
+		return str;
 	}
 
 	void colored_str::color_prompt()
