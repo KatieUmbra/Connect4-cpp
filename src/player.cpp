@@ -5,15 +5,15 @@
 
 namespace c4
 {
-	std::string translate_token(const token tk)
+	auto translate_token(const token tk) -> std::string
 	{
 		std::string result;
 		switch (tk)
 		{
-		case token::x:
+		case token::X:
 			result = "X";
 			break;
-		case token::o:
+		case token::O:
 			result = "O";
 			break;
 		}
@@ -31,17 +31,17 @@ namespace c4
 		, max_score_(max_score)
 	{}
 
-	int player::max_score() const
+	auto player::max_score() const -> int
 	{
 		return max_score_;
 	}
 
-	std::string player::name() const
+	auto player::name() const -> std::string
 	{
 		return name_;
 	}
 
-	std::string player::token() const
+	auto player::token() const -> std::string
 	{
 		return token_;
 	}

@@ -12,15 +12,15 @@ namespace c4
 		const player player_1;
 		const player player_2;
 		
-		static player_pair init();
-		player operator[](const unsigned int&) const;
+		static auto init() -> player_pair;
+		auto operator[](const unsigned int&) const -> player;
 
 	private:
 
 		player_pair(const std::pair<std::string, std::string>&, const std::pair<token, token>&);
 		void print_tokens() const;
-		static std::string ask_name(const int&);
-		static std::pair<token, token> ask_token(const std::pair<std::string, std::string>&, const int&);
+		static auto ask_name(const int&) -> std::string;
+		static auto ask_token(const std::pair<std::string, std::string>&, const int&) -> std::pair<token, token>;
 	};
 	
 }

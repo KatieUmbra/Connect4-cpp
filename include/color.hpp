@@ -9,13 +9,13 @@ namespace c4::color
 {
 	enum class code
 	{
-		c033,
-		ce,
-		cx1b,
+		C033,
+		Ce,
+		Cx1b,
 	};
 
-	std::string code_string(const code input);
-	inline constexpr code default_code = code::c033;
+	auto code_string(code input) -> std::string;
+	inline constexpr code DefaultCode = code::C033;
 
 	struct rgb
 	{
@@ -28,31 +28,31 @@ namespace c4::color
 		const std::string reset_code_;
 		const std::string complete_code_;
 
-		inline static bool set_code_ = false;
-		inline static code working_code_;
+		inline static bool set_code = false;
+		inline static code working_code;
 
-		static std::string gen_complete_code(const rgb&);
-		static std::string gen_complete_code(int);
+		static auto gen_complete_code(const rgb&) -> std::string;
+		static auto gen_complete_code(int) -> std::string;
 
-		static std::string gen_reset_code();
+		static auto gen_reset_code() -> std::string;
 
 	public:
 		explicit colored_str(const rgb&);
 		explicit colored_str(int);
 		void colorize_str(std::string&) const;
-		std::string colorize_str(const char*) const;
+		auto colorize_str(const char*) const -> std::string;
 		static void color_prompt();
 	};
 
 	namespace const_colors
 	{
-		CONST_COLOR white(255, 255, 255);
-		CONST_COLOR red(255, 0, 0);
-		CONST_COLOR blue(0, 0, 255);
-		CONST_COLOR green(0, 255, 0);
-		CONST_COLOR black(0, 0, 0);
-		CONST_COLOR yellow(255, 255, 0);
-		CONST_COLOR magenta(255, 0, 255);
-		CONST_COLOR aqua(0, 255, 255);
+		CONST_COLOR White(255, 255, 255);
+		CONST_COLOR Red(255, 0, 0);
+		CONST_COLOR Blue(0, 0, 255);
+		CONST_COLOR Green(0, 255, 0);
+		CONST_COLOR Black(0, 0, 0);
+		CONST_COLOR Yellow(255, 255, 0);
+		CONST_COLOR Magenta(255, 0, 255);
+		CONST_COLOR Aqua(0, 255, 255);
 	}
 }

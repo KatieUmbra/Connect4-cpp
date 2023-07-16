@@ -20,7 +20,8 @@ set(SOURCES src/color.cpp
 			src/player.cpp
 			src/player_pair.cpp
 			src/vector2.cpp
-			src/board.cpp)
+			src/board.cpp
+			src/cell.cpp)
 
 set(HEADERS	include/color.hpp
 			include/game.hpp
@@ -29,7 +30,8 @@ set(HEADERS	include/color.hpp
 			include/player_pair.hpp
 			include/token.hpp
 			include/vector2.hpp
-			include/board.hpp)
+			include/board.hpp
+			include/cell.hpp)
 
 # Building options
 add_executable(Connect4 ${SOURCES} ${HEADERS})

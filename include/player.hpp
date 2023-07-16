@@ -13,12 +13,12 @@ namespace c4
 		const std::string token_;
 		int max_score_;
 	public:
-		explicit player(const int max_score, std::string name, const c4::token token);
+		explicit player(int max_score, std::string name, c4::token token);
 
 		// getters
-		[[nodiscard]] std::string name() const;
-		[[nodiscard]] std::string token() const;
-		[[nodiscard]] int max_score() const;
+		[[nodiscard]] auto name() const -> std::string;
+		[[nodiscard]] auto token() const -> std::string;
+		[[nodiscard]] auto max_score() const -> int;
 
 		// setter
 		void set_max_score(const int& max_score);

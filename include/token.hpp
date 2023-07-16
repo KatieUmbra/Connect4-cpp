@@ -1,12 +1,13 @@
 #pragma once
 
+#include <string>
 namespace c4
 {
 	enum class token
 	{
-		x,
-		o
+		X,
+		O
 	};
 
-	std::string translate_token(token);
+	auto translate_token(token) -> std::string;
 }

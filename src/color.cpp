@@ -1,43 +1,44 @@
 #include "../include/color.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cctype>
 #include <iostream>
 #include <ranges>
 #include <sstream>
 #include <ostream>
 #include <string>
+#include <utility>
 
 namespace c4::color
 {
-	std::string code_string(const code input)
+	auto code_string(const code input) -> std::string
 	{
 		switch (input)
 		{
-		// ReSharper disable once CommentTypo
-		case code::c033:  // NOLINT(bugprone-branch-clone)
-			return {"\033"};
-		case code::ce:
-			return {"\e"};  // NOLINT(clang-diagnostic-pedantic)
-		case code::cx1b:
-			return {"\x1b"};
+			case code::C033: //NOLINT
+				return {"\033"};
+			case code::Ce:
+				return {"\e"};
+			case code::Cx1b:
+				return {"\x1b"};
 		}
 		return {};
 	}
 
-	rgb::rgb(const int r, const int g, const int b)
+	rgb::rgb(const int r, int g, const int b)
 		: r(r)
 		, g(g)
 		, b(b)
 		{}
 
-	std::string colored_str::gen_complete_code(const rgb& color)
+	auto colored_str::gen_complete_code(const rgb& color) -> std::string
 	{
 		std::string result;
-		if (set_code_)
+		if (set_code)
 		{
 			std::stringstream ss;
-			ss << code_string(working_code_);
+			ss << code_string(working_code);
 			ss << "[38;2;";
 			ss << color.r << ";";
 			ss << color.g << ";";
@@ -51,13 +52,13 @@ namespace c4::color
 		return result;
 	}
 
-	std::string colored_str::gen_complete_code(int color)
+	auto colored_str::gen_complete_code(int color) -> std::string
 	{
 		std::string result;
-		if (set_code_)
+		if (set_code)
 		{
 			std::stringstream ss;
-			ss << code_string(working_code_);
+			ss << code_string(working_code);
 			ss << "[";
 			ss << color;
 			ss << "m";
@@ -70,12 +71,12 @@ namespace c4::color
 		return result;
 	}
 
-	std::string colored_str::gen_reset_code()
+	auto colored_str::gen_reset_code() -> std::string
 	{
 		std::string result;
-		if(set_code_)
+		if(set_code)
 		{
-			result = code_string(working_code_) + "[0m";
+			result = code_string(working_code) + "[0m";
 		}
 		else
 		{
@@ -96,7 +97,7 @@ namespace c4::color
 
 	void colored_str::colorize_str(std::string& str) const
 	{
-		if (set_code_)
+		if (set_code)
 		{
 			std::string new_str(complete_code_);
 			new_str.append(str);
@@ -105,9 +106,9 @@ namespace c4::color
 		}
 	}
 
-	std::string colored_str::colorize_str(const char* str) const
+	auto colored_str::colorize_str(const char* str) const -> std::string
 	{
-		if(set_code_)
+		if(set_code)
 		{
 			std::string new_str(complete_code_);
 			new_str.append(str);
@@ -119,13 +120,12 @@ namespace c4::color
 
 	void colored_str::color_prompt()
 	{
-		if (!set_code_)
+		if (!set_code)
 		{
-			// ReSharper disable once CppTooWideScopeInitStatement
-			std::pair<std::string, code> prompts[] = {
-				{"\033[38;2;255;105;190m test \033[0m", code::c033},
-				{"\e[38;2;255;105;190m test \e[0m", code::ce},  // NOLINT(clang-diagnostic-pedantic)
-				{"\x1b[38;2;255;105;190m test \x1b[0m", code::cx1b}
+			std::array<std::pair<std::string, code>, 3> prompts = {
+				std::pair("\033[38;2;255;105;190m test \033[0m", code::C033),
+				std::pair("\e[38;2;255;105;190m test \e[0m", code::Ce),
+				std::pair("\x1b[38;2;255;105;190m test \x1b[0m", code::Cx1b)
 			};
 			for (const auto& [fst, snd] : prompts)
 			{
@@ -139,8 +139,8 @@ namespace c4::color
 				}
 				if (answer == "Y")
 				{
-					set_code_ = true;
-					working_code_ = snd;
+					set_code = true;
+					working_code = snd;
 					break;
 				}
 			}

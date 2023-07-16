@@ -8,8 +8,8 @@ namespace c4
 		int x_;
 		int y_;
 	public:
-		vector2(const int& x, const int& y);
-		[[nodiscard]] int get_x() const;
-		[[nodiscard]] int get_y() const;
+		vector2(int x, int y);
+		[[nodiscard]] auto get_x() const -> int;
+		[[nodiscard]] auto get_y() const -> int;
 	};
 }

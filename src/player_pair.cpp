@@ -21,7 +21,7 @@ namespace c4
 		, player_2(0, names.second, tokens.second)
 	{}
 
-	player_pair player_pair::init()
+	auto player_pair::init() -> player_pair
 	{
 		const std::string player_1_name = ask_name(1);
 		const std::string player_2_name = ask_name(2);
@@ -41,9 +41,9 @@ namespace c4
 
 	void player_pair::print_tokens() const
 	{
-		auto player_name_color = c4::color::colored_str(c4::color::const_colors::magenta);
-		auto x_color = c4::color::colored_str(c4::color::const_colors::red);
-		auto o_color = c4::color::colored_str(c4::color::const_colors::green);
+		auto player_name_color = c4::color::colored_str(c4::color::const_colors::Magenta);
+		auto x_color = c4::color::colored_str(c4::color::const_colors::Red);
+		auto o_color = c4::color::colored_str(c4::color::const_colors::Green);
 		for (int i = 0; i < 2; i++)
 		{
 			const player current_player = (*this)[i];
@@ -68,10 +68,10 @@ namespace c4
 	}
 
 
-	std::pair<token, token> player_pair::ask_token(const std::pair<std::string, std::string>& names, const int& first)
+	auto player_pair::ask_token(const std::pair<std::string, std::string>& names, const int& first) -> std::pair<token, token>
 	{
-		auto x_color = c4::color::colored_str(c4::color::const_colors::red);
-		auto o_color = c4::color::colored_str(c4::color::const_colors::green);
+		auto x_color = c4::color::colored_str(c4::color::const_colors::Red);
+		auto o_color = c4::color::colored_str(c4::color::const_colors::Green);
 		std::string x = x_color.colorize_str("[X]");
 		std::string o = o_color.colorize_str("[O]");
 		std::cout
@@ -89,15 +89,17 @@ namespace c4
 		if (choice == "X" || choice == "O")
 		{
 			if (choice == "X")
-				return std::make_pair(token::x, token::o);
-			return std::make_pair(token::o, token::x);
+			{
+				return std::make_pair(token::X, token::O);
+			}
+			return std::make_pair(token::O, token::X);
 		}
 		return ask_token(names, first);
 	}
 
-	std::string player_pair::ask_name(const int& id)
+	auto player_pair::ask_name(const int& id) -> std::string
 	{
-		auto player_id_color = c4::color::colored_str(c4::color::const_colors::blue);
+		auto player_id_color = c4::color::colored_str(c4::color::const_colors::Blue);
 		std::string player_id(std::to_string(id));
 		player_id_color.colorize_str(player_id);
 		std::string returned_value;
@@ -110,7 +112,7 @@ namespace c4
 		return returned_value;
 	}
 
-	player player_pair::operator[](const unsigned int& index) const
+	auto player_pair::operator[](const unsigned int& index) const -> player
 	{
 		switch (index)
 		{
