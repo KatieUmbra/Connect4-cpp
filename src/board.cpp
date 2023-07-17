@@ -18,7 +18,7 @@ namespace c4
 
 	auto board::operator[](std::pair<unsigned int, unsigned int> index) -> cell*
 	{
-		const unsigned int m_index = (index.second - 1) * width_ + index.first;
+		const unsigned int m_index = index.second * width_ + index.first;
 		if (m_index > this->cells_.size()) throw std::invalid_argument("The provided index is invalid");
 		return &(this->cells_[m_index]);
 	}
@@ -26,7 +26,7 @@ namespace c4
 	void board::set_value(std::pair<unsigned int, unsigned int> index, cell_content content)
 	{
 		if (content == cell_content::Empty) throw std::invalid_argument("cannot set a board sell content's to empty");
-		const unsigned int m_index = (index.second - 1) * width_ + index.first;
+		const unsigned int m_index = index.second * width_ + index.first;
 		if (m_index > this->cells_.size()) throw std::invalid_argument("The provided index is invalid");
 		if (this->cells_[m_index].get_cell_content() == cell_content::Empty)
 		{
@@ -41,7 +41,7 @@ namespace c4
 		std::vector<cell*> returned { std::vector<cell*>() };
 		for (int i = 0; i < this->width_; i++)
 		{
-			returned.push_back(&(this->cells_[start+i]));
+			returned.emplace_back(&(this->cells_[start+i]));
 		}
 		return returned;
 	}
@@ -51,7 +51,7 @@ namespace c4
 		auto returned { std::vector<cell*>() };
 		for (int i = 1; i <= this->height_; i++)
 		{
-			returned.push_back(&(this->cells_[static_cast<size_t>(column)*i]));
+			returned.emplace_back(&(this->cells_[static_cast<size_t>(column)*i]));
 		}
 		return returned;
 	}

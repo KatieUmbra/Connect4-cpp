@@ -12,11 +12,15 @@ set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_CXX_FLAGS "-g -std=c++20")
 
+# CMake config
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 # Variables
 set(SOURCES src/color.cpp
 			src/game.cpp
 			src/global.cpp
-			src/main.cpp
 			src/player.cpp
 			src/player_pair.cpp
 			src/vector2.cpp
@@ -33,5 +37,21 @@ set(HEADERS	include/color.hpp
 			include/board.hpp
 			include/cell.hpp)
 
+set(TEST_SOURCES	test/game.cpp)
+
 # Building options
-add_executable(Connect4 ${SOURCES} ${HEADERS})
+add_library(Binary ${SOURCES} ${HEADERS})
+add_executable(Connect4 src/main.cpp)
+target_link_libraries(Connect4 PRIVATE Binary)
+
+# Including boost and conan files
+include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
+find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
+
+# Exporting compiler commands for clangd
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# Testing binary
+add_executable(Test ${TEST_SOURCES})
+target_link_libraries(Test PRIVATE Binary ${CONAN_LIBS}) 
