@@ -1,0 +1,41 @@
+{
+	"tasks":
+	[
+		{
+			"name": "CMake Build",
+			"cmd": "mkdir build; conan install . --output-folder=build --build=missing --profile=default; cmake -B build; cp build/compile_commands.json .",
+			"cwd": "${global_cwd}",
+			"tags": ["build", "cmake", "conan"]
+		},
+		{
+			"name": "Make Build (Debug)",
+			"cmd": "cmake --build build --config Debug",
+			"cwd": "${global_cwd}",
+			"tags": ["build", "make", "debug"]
+		},
+		{
+			"name": "Make Build (Release)",
+			"cmd": "cmake --build build --config Release",
+			"cwd": "${global_cwd}",
+			"tags": ["build", "make", "release"]
+		},
+		{
+			"name": "Run",
+			"cmd": "cmake --build build --config Debug; ./build/bin/Connect4",
+			"cwd": "${global_cwd}",
+			"tags": ["build", "run", "debug"]
+		},
+		{
+			"name": "Clean Build",
+			"cmd": "rm -rf build/* CMakeUserPresets.json compile_commands.json .cache",
+			"cwd": "${global_cwd}",
+			"tags": ["build", "clean", "make", "cmake"]
+		},
+		{
+			"name": "Test",
+			"cmd": "cmake --build build --config Debug; ./build/bin/Test",
+			"cwd": "${global_cwd}",
+			"tags": ["build", "test", "run", "debug"]
+		}
+	]
+}

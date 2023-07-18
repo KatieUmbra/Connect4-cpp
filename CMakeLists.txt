@@ -1,5 +1,5 @@
 # CMAKE Minimum version
-cmake_minimum_required(VERSION 3.8...3.26)
+cmake_minimum_required(VERSION 3.15...3.26)
 
 # Project metadata
 project(Connect4 VERSION 1.0 DESCRIPTION "Connect 4 CLI game written in c++" LANGUAGES CXX)
@@ -47,11 +47,11 @@ target_link_libraries(Connect4 PRIVATE Binary)
 # Including boost and conan files
 include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
 
 # Exporting compiler commands for clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Testing binary
 add_executable(Test ${TEST_SOURCES})
-target_link_libraries(Test PRIVATE Binary ${CONAN_LIBS}) 
+target_link_libraries(Test PRIVATE Binary ${CONAN_LIBS})
+target_include_directories(Test PRIVATE ${Boost_INCLUDE_DIR})

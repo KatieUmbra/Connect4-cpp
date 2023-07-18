@@ -5,6 +5,7 @@
 #include <boost/test/included/unit_test.hpp>
 #include <boost/bind/bind.hpp>
 #include <memory>
+#include <iostream>
 
 #include "../include/board.hpp"
 
@@ -30,12 +31,12 @@ public:
 	void test_vertical()
 	{
 		c4::board my_board{2, 2};
-		my_board.set_value(std::pair(0, 0), c4::cell_content::X);
-		my_board.set_value(std::pair(0, 1), c4::cell_content::X);
-		auto column = my_board.get_column(0);
+		my_board.set_value(std::pair(1, 0), c4::cell_content::X);
+		my_board.set_value(std::pair(1, 1), c4::cell_content::X);
+		auto column = my_board.get_column(1);
 		auto cond_1 = column[0]->get_cell_content() == c4::cell_content::X;
 		auto cond_2 = column[1]->get_cell_content() == c4::cell_content::X;
-		auto cond_3 = my_board.get_column(1)[0]->get_cell_content() == c4::cell_content::Empty;
+		auto cond_3 = my_board.get_column(0)[0]->get_cell_content() == c4::cell_content::Empty;
 		auto final_cond = cond_1 && cond_2 && cond_3;
 		BOOST_TEST(final_cond);
 	}

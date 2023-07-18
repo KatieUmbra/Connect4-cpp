@@ -8,7 +8,7 @@ namespace c4
 {
 	board::board(const int width, int height)
 		: width_(width)
-		, height_(height) 
+		, height_(height)
 	{
 		for (int i = 0; i < width * height; i++)
 		{
@@ -49,10 +49,21 @@ namespace c4
 	auto board::get_column(int column) -> std::vector<cell*>
 	{
 		auto returned { std::vector<cell*>() };
-		for (int i = 1; i <= this->height_; i++)
+		for (int i = 0; i < this->height_; i++)
 		{
-			returned.emplace_back(&(this->cells_[static_cast<size_t>(column)*i]));
+			returned.emplace_back(&(this->cells_[(i * width_) + column]));
 		}
+		return returned;
+	}
+
+	auto board::get_diagonal(const int row, int column, diagonal_direction direction) -> std::vector<cell*>
+	{
+		auto const* center{(*this)[std::pair(row, column)]};
+		if (direction == c4::diagonal_direction::Positive)
+		{
+			// TODO(Katie): 
+		}
+		auto returned{std::vector<cell*>()};
 		return returned;
 	}
 };
