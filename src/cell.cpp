@@ -1,4 +1,6 @@
-#include "../include/cell.hpp"
+#include "cell.hpp"
+#include <iostream>
+#include <string>
 
 namespace c4
 {
@@ -6,7 +8,11 @@ namespace c4
 		:value_(cell_content::Empty)
 	{}
 
-	auto cell::get_cell_content() -> cell_content {
+	cell::cell(cell_content content)
+		:value_(content)
+	{}
+
+	auto cell::get_cell_content() -> cell_content {	
 		return this->value_;
 	}
 
