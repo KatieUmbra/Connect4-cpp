@@ -33,7 +33,7 @@
 		},
 		{
 			"name": "Test",
-			"cmd": "cmake --build build --config Debug; ./build/bin/Test",
+			"cmd": "make -C build; ./build/bin/Test",
 			"cwd": "${global_cwd}",
 			"tags": ["build", "test", "run", "debug"]
 		}
