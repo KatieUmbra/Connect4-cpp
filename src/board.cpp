@@ -25,7 +25,6 @@ namespace c4
 	auto board::operator[](std::pair<unsigned int, unsigned int> index) -> cell*
 	{
 		const unsigned int m_index = index.second * width_ + index.first;
-		std::cout << "m_index: " << m_index << std::endl;
 		if (m_index >= this->cells_.size()) //NOLINT
 			throw std::invalid_argument("The provided index is invalid");
 
@@ -52,68 +51,60 @@ namespace c4
 
 	auto board::get_row(int row) -> std::vector<cell*>
 	{
-		std::cout << "Getting row: " << row << std::endl;
 		const int start = this->width_ * row;
 		std::vector<cell*> returned{static_cast<std::size_t>(this->width_)};
 		for (int i = 0; i < this->width_; i++)
 		{
-			std::cout << "Index: " << start + i << std::endl;
-			try {
-				returned.emplace_back(&(this->cells_[start+i]));
-			}
-			catch(std::exception&) {
-				std::cout << "oops!" << std::endl;
-			}
+
+			returned[i] = &(this->cells_[start+i]);
 		}
 		return returned;
 	}
 
 	auto board::get_column(int column) -> std::vector<cell*>
 	{
-		std::cout << "Getting Column: " << column << std::endl;
+
 		std::vector<cell*> returned {static_cast<std::size_t>(this->height_)};
 		for (int i = 0; i < this->height_; i++)
 		{
-			
-			returned.emplace_back(&(this->cells_[(i * width_) + column]));
+			returned[i] = &(this->cells_[(i * width_) + column]);
 		}
 		return returned;
-	}
+	}	
 
-	auto board::get_diagonal(const int row, int column, diagonal_direction direction) -> std::vector<cell*>
+	//TODO(Katie)
+	auto board::get_diagonal(const int row, int column, diagonal_direction direction) -> std::vector<cell*> //NOLINT
 	{
-		std::cout << "Getting Diagonal: " << row << ", " << column << std::endl;
-		auto center = column * this->width_ + row;
-		std::vector<cell*> diagonal{};
-		diagonal.reserve(std::min(width_, height_));
+		std::vector<cell*> diagonal{static_cast<size_t>(std::min(width_, height_)), nullptr};
 		auto quadrants = this->get_quadrants(row, column);
-		int center_pos = 0;
-		if (direction == c4::diagonal_direction::Positive)
+		int q_1;
+		int q_2;
+		int direction_sign;
+		unsigned int difference;
+		if (direction == c4::diagonal_direction::Negative)
 		{
-			center_pos = quadrants[3];
-			auto count = this->width_ - 1;
-			for(auto i = 1; i <= quadrants[2]; i++)
-			{
-				diagonal[center_pos + i] = &(this->cells_[center - count * i]);
-			}
-			for (auto i = 1; i <= quadrants[3]; i++)
-			{
-				diagonal[center_pos - i] =  &(this->cells_[center + count * i]);
-			}
-
+			q_1 = quadrants[0];
+			q_2 = quadrants[3];
+			direction_sign = 1;
+			difference = this->width_ + 1;
 		}
 		else
 		{
-			auto count = this->width_ + 1;
-			center_pos = quadrants[4];
-			for(auto i = 1; i <= quadrants[1]; i++)
-			{
-				diagonal[center_pos + i] = &(this->cells_[center + count * i]);
-			}
-			for (auto i = 1; i <= quadrants[4]; i++)
-			{
-				diagonal[center_pos - i] = &(this->cells_[center - count * i]);
-			}
+			q_1 = quadrants[1];
+			q_2 = quadrants[2];
+			direction_sign = -1;
+			difference = this->width_ - 1;
+		}
+		auto center = q_1;
+		auto center_position = position_from_coordinates(row, column);
+		diagonal[center] = &this->cells_[center_position];
+		for (int i = 0; i < q_1; i--)
+		{
+			diagonal[center - 1 - i] = &this->cells_[center_position - (difference * i)];
+		}
+		for (int i = 1; i < q_2; i++)
+		{
+			diagonal[center + i] = &this->cells_[center_position + (difference * i)];
 		}
 		return diagonal;
 	}
@@ -140,12 +131,11 @@ namespace c4
 		return max;
 	}
 
-	auto board::get_quadrants(const unsigned int row, unsigned int column) const -> std::array<int, 4UL> 
+	auto board::get_quadrants(const int row, int column) const -> std::array<int, 4UL> 
 	{
-		std::cout << "Getting quadrants: " << row << ", " << column << std::endl;
-		std::array<int, 4UL> returned {0, 0, 0, 0}; 
-		std::array y = {row,		static_cast<unsigned int>(this->height_ - row - 1)};
-		std::array x = {column,		static_cast<unsigned int>(this->width_ - column - 1)};
+		std::array<int, 4UL> returned {0, 0, 0, 0};
+		std::array y = {row,		this->height_ - row};
+		std::array x = {column,		this->width_ - column};
 		//NOLINTBEGIN(bugprone-narrowing-conversions)
 		returned[0] = std::min(y[0], x[0]);
 		returned[1] = std::min(y[0], x[1]);
@@ -160,5 +150,10 @@ namespace c4
 		auto x = position / this->width_;
 		auto y = position % this->width_;
 		return std::pair(y, x);
+	}
+
+	auto board::position_from_coordinates(const unsigned int row, unsigned int column) const -> unsigned int
+	{
+		return this->width_ * column + row;
 	}
 };

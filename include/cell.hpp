@@ -16,6 +16,7 @@ namespace c4
 			case cell_content::X: return "X";
 			case cell_content::O: return "O";
 		}
+		return "Null";
 	}
 
 	struct cell
