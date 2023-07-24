@@ -1,7 +1,6 @@
-﻿#include <iostream>
-#include "../include/game.hpp"
+﻿#include "game.hpp"
 
-auto main() -> int
+auto main(int, char**) -> int
 {
 	c4::game();
 	return EXIT_SUCCESS;

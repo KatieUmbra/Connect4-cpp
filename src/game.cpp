@@ -1,8 +1,7 @@
-#include "../include/game.hpp"
-#include "../include/player_pair.hpp"
-#include "../include/global.hpp"
-#include "../include/color.hpp"
-#include <iostream>
+#include "game.hpp"
+#include "player_pair.hpp"
+#include "global.hpp"
+#include "color.hpp"
 
 void c4::game()
 {

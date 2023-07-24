@@ -1,7 +1,5 @@
-#include "../include/player.hpp"
-
-#include <iostream>
-#include "../include/token.hpp"
+#include "player.hpp"
+#include "token.hpp"
 
 namespace c4
 {

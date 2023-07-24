@@ -1,14 +1,7 @@
-#include "boost/test/framework.hpp" //NOLINT
-#include "boost/test/unit_test_suite.hpp"
-#include "cell.hpp"
 #define BOOST_TEST_MODULE Board Test 
-
-#include <boost/test/included/unit_test.hpp>
-#include <boost/bind/bind.hpp>
-#include <memory>
-#include <iostream>
-
-#include "../include/board.hpp"
+#include "boost-test-pch.hpp"
+#include "cell.hpp"
+#include "board.hpp"
 
 //NOLINTBEGIN(readability-convert-member-functions-to-static)
 class board_test

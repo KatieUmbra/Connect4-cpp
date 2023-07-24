@@ -23,7 +23,6 @@ set(SOURCES src/color.cpp
 			src/global.cpp
 			src/player.cpp
 			src/player_pair.cpp
-			src/vector2.cpp
 			src/board.cpp
 			src/cell.cpp)
 
@@ -33,16 +32,19 @@ set(HEADERS	include/color.hpp
 			include/player.hpp
 			include/player_pair.hpp
 			include/token.hpp
-			include/vector2.hpp
 			include/board.hpp
 			include/cell.hpp)
 
+set(PRECOMPILED_HEADERS		include/pch.hpp)
+
+set(TEST_PCH		test/boost-test-pch.hpp)
 set(TEST_SOURCES	test/game.cpp)
 
 # Building options
 add_library(Binary ${SOURCES} ${HEADERS})
 add_executable(Connect4 src/main.cpp)
 target_link_libraries(Connect4 PRIVATE Binary)
+target_precompile_headers(Connect4 PRIVATE ${PRECOMPILED_HEADERS})
 
 # Including boost and conan files
 include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
@@ -55,3 +57,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_executable(Test ${TEST_SOURCES})
 target_link_libraries(Test PRIVATE Binary ${CONAN_LIBS})
 target_include_directories(Test PRIVATE ${Boost_INCLUDE_DIR})
+target_precompile_headers(Test PRIVATE ${TEST_PCH})

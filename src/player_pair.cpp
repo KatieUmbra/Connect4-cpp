@@ -1,14 +1,12 @@
-#include "../include/color.hpp"
-#include "../include/player.hpp"
-#include "../include/player_pair.hpp"
+#include "color.hpp"
+#include "player.hpp"
+#include "player_pair.hpp"
 
 #include <cctype>
-#include <iostream>
 #include <algorithm>
 #include <map>
 #include <random>
 #include <stdexcept>
-#include <string>
 
 namespace c4
 {

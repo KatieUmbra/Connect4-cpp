@@ -1,13 +1,11 @@
-#include "../include/color.hpp"
+#include "color.hpp"
 
 #include <algorithm>
 #include <array>
 #include <cctype>
-#include <iostream>
 #include <ranges>
 #include <sstream>
 #include <ostream>
-#include <string>
 #include <utility>
 
 namespace c4::color

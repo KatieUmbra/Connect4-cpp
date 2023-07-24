@@ -1,6 +1,4 @@
 #include "cell.hpp"
-#include <iostream>
-#include <string>
 
 namespace c4
 {
