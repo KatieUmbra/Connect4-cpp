@@ -3,6 +3,7 @@
 #include "player_pair.hpp"
 #include "scores.hpp"
 #include "board.hpp"
+#include "pch.hpp"
 
 namespace c4
 {
@@ -10,11 +11,12 @@ namespace c4
 
 	void init();
 
-	void game(player_pair& players);
+	void game();
 
 	auto input_prompt(player& plr, board& p_board) -> std::pair<int, int>;
 
-	void main_loop(player_pair& players, board& p_board);
+	auto main_loop(player_pair& players, board& p_board) -> bool;
 
-	auto scores_handler(score p_score) -> std::array<score, 5>;
+	auto scores_handler(score&& p_score) -> std::array<score, 5>;
+	void print_scores(std::array<score, 5>&& scores);
 }
