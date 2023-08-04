@@ -237,4 +237,38 @@ namespace c4
 		this->set_value({column, last_free_index}, content);
 		return {true, {column, last_free_index}};
 	}
+	
+	auto board::is_board_full() -> bool
+	{
+		int count = 0;
+		for (auto cell : this->cells_)
+		{
+			if(cell.get_cell_content() == cell_content::Empty)
+			{
+				count++;
+			}
+		}
+		return count == 0;
+	}
+
+	auto board::get_size() -> int
+	{
+		return static_cast<int>(this->cells_.size());
+	}
+	
+	auto board::get_score() -> int
+	{
+		int score = 1;
+		for (int i = 0; i < this->height_; i++)
+		{
+			for (int j = 0; j < this->width_; j++)
+			{
+				if (this->cells_.at(static_cast<size_t>(i * j)).get_cell_content() == cell_content::Empty)
+				{
+					score += i + 1;
+				}
+			}
+		}
+		return score;
+	}
 };

@@ -35,9 +35,7 @@ namespace c4
 			? std::pair {player_1_name, player_2_name} 
 			: std::pair {player_2_name, player_1_name};
 
-		std::cout << "First Player Index: " << first_player << '\n';
-
-		const std::pair player_tokens(ask_token(player_name_ordered_pair, first_player));
+		const auto player_tokens = ask_token(player_name_ordered_pair);
 		player_pair pair(player_name_ordered_pair, player_tokens);
 		pair.print_tokens();
 		return pair;
@@ -50,7 +48,7 @@ namespace c4
 		auto o_color = c4::color::colored_str(c4::color::const_colors::Green);	
 		for (int i = 0; i < 2; i++)
 		{
-			const player current_player = (*this)[i];
+			const player current_player = (i == 0) ? this->player_1 : this->player_2;
 			auto current_player_name = current_player.name();
 			auto current_player_token = current_player.token();
 			player_name_color.colorize_str(current_player_name);
@@ -67,12 +65,12 @@ namespace c4
 				<< ", you're playing with the token: "
 				<< current_player_token
 				<< "."
-				<< std::endl;
+				<< '\n';
 		}
 	}
 
 
-	auto player_pair::ask_token(const std::pair<std::string, std::string>& names, int first) -> std::pair<token, token>
+	auto player_pair::ask_token(const std::pair<std::string, std::string>& names) -> std::pair<token, token>
 	{
 		auto x_color = c4::color::colored_str(c4::color::const_colors::Red);
 		auto o_color = c4::color::colored_str(c4::color::const_colors::Green);
@@ -80,7 +78,7 @@ namespace c4
 		std::string o = o_color.colorize_str("[O]");
 		std::cout
 			<< "Hello "
-			<< ((first == 0) ? names.first : names.second)
+			<< names.first
 			<< ", Please choose between "
 			<< x
 			<<" or "
@@ -94,11 +92,11 @@ namespace c4
 		{
 			if (choice == "X")
 			{
-				return std::make_pair(token::X, token::O);
+				return {token::X, token::O};
 			}
-			return std::make_pair(token::O, token::X);
+			return {token::O, token::X};
 		}	
-		return ask_token(names, first);
+		return ask_token(names);
 	
 	}
 
@@ -117,7 +115,7 @@ namespace c4
 		return returned_value;
 	}
 
-	auto player_pair::operator[](const unsigned int& index) const -> player
+	auto player_pair::operator[](unsigned int index) const -> player
 	{
 		switch (index)
 		{

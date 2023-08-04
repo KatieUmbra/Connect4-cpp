@@ -134,7 +134,7 @@ namespace c4
 		std::sort(complete.begin(), complete.end(), 
 			[](auto& a, auto& b) -> bool 
 			{
-				return a.score_value < b.score_value;
+				return a.score_value > b.score_value;
 			});
 
 		for (int i = 0; i < 5; i++)
