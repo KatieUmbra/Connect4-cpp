@@ -23,16 +23,22 @@ namespace c4
 	{
 		const std::string player_1_name = ask_name(1);
 		const std::string player_2_name = ask_name(2);
-		const std::pair player_name_pair(player_1_name, player_2_name);
 
 		//random stuff
 		std::random_device random_device;
 		std::mt19937 rng(random_device());
-		std::uniform_int_distribution uniform_int_distribution(0, 1);
-		const int first_player = uniform_int_distribution(rng);
+		std::uniform_int_distribution uniform_int_distribution(0, 100);
+		const int first_player = uniform_int_distribution(rng) % 2;
+		
+		const std::pair player_name_ordered_pair = 
+			(first_player == 0) 
+			? std::pair {player_1_name, player_2_name} 
+			: std::pair {player_2_name, player_1_name};
 
-		const std::pair player_tokens(ask_token(player_name_pair, first_player));
-		player_pair pair(player_name_pair, player_tokens);
+		std::cout << "First Player Index: " << first_player << '\n';
+
+		const std::pair player_tokens(ask_token(player_name_ordered_pair, first_player));
+		player_pair pair(player_name_ordered_pair, player_tokens);
 		pair.print_tokens();
 		return pair;
 	}
@@ -41,7 +47,7 @@ namespace c4
 	{
 		auto player_name_color = c4::color::colored_str(c4::color::const_colors::Magenta);
 		auto x_color = c4::color::colored_str(c4::color::const_colors::Red);
-		auto o_color = c4::color::colored_str(c4::color::const_colors::Green);
+		auto o_color = c4::color::colored_str(c4::color::const_colors::Green);	
 		for (int i = 0; i < 2; i++)
 		{
 			const player current_player = (*this)[i];
@@ -66,7 +72,7 @@ namespace c4
 	}
 
 
-	auto player_pair::ask_token(const std::pair<std::string, std::string>& names, const int& first) -> std::pair<token, token>
+	auto player_pair::ask_token(const std::pair<std::string, std::string>& names, int first) -> std::pair<token, token>
 	{
 		auto x_color = c4::color::colored_str(c4::color::const_colors::Red);
 		auto o_color = c4::color::colored_str(c4::color::const_colors::Green);
@@ -74,7 +80,7 @@ namespace c4
 		std::string o = o_color.colorize_str("[O]");
 		std::cout
 			<< "Hello "
-			<< names.first
+			<< ((first == 0) ? names.first : names.second)
 			<< ", Please choose between "
 			<< x
 			<<" or "
@@ -91,8 +97,9 @@ namespace c4
 				return std::make_pair(token::X, token::O);
 			}
 			return std::make_pair(token::O, token::X);
-		}
+		}	
 		return ask_token(names, first);
+	
 	}
 
 	auto player_pair::ask_name(const int& id) -> std::string
@@ -119,7 +126,7 @@ namespace c4
 		case 1:
 			return player_2;
 		default:
-			throw std::invalid_argument("There are only [0, 1] players, argument was out of bounds.");
+			throw std::invalid_argument("The only player indexes available are 0 and 1, argument was out of bounds.");
 		}
 	}
 

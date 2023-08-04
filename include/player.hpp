@@ -19,8 +19,9 @@ namespace c4
 		[[nodiscard]] auto name() const -> std::string;
 		[[nodiscard]] auto token() const -> std::string;
 		[[nodiscard]] auto max_score() const -> int;
+		[[nodiscard]] auto get_token_enum() const -> c4::token;
 
 		// setter
-		void set_max_score(const int& max_score);
+		void set_max_score(int max_score);
 	};
 }

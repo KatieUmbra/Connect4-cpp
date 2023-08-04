@@ -1,6 +1,7 @@
 #pragma once
 
 #include <pch.hpp>
+#include <string_view>
 namespace c4
 {
 	enum class token
@@ -9,5 +10,5 @@ namespace c4
 		O
 	};
 
-	auto translate_token(token) -> std::string;
+	auto translate_token(token) -> std::string_view;
 }

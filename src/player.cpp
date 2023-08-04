@@ -1,21 +1,13 @@
 #include "player.hpp"
 #include "token.hpp"
+#include <string_view>
 
 namespace c4
 {
-	auto translate_token(const token tk) -> std::string
+	auto translate_token(const token tk) -> std::string_view
 	{
-		std::string result;
-		switch (tk)
-		{
-		case token::X:
-			result = "X";
-			break;
-		case token::O:
-			result = "O";
-			break;
-		}
-		return result;
+		using namespace std::literals;
+		return tk == token::X ? "X"sv : "O"sv;
 	}
 
 	player::player
@@ -44,10 +36,13 @@ namespace c4
 		return token_;
 	}
 
-	void player::set_max_score(const int& max_score)
+	auto player::get_token_enum() const -> c4::token
+	{
+		return this->token_ == "X" ? c4::token::X : c4::token::O;
+	}
+
+	void player::set_max_score(int max_score)
 	{
 		max_score_ = max_score;
 	}
-
-
 }

@@ -4,10 +4,13 @@
 #include <exception>
 #include <iterator>
 #include <list>
+#include <sstream>
 #include <stdexcept>
+#include <string>
 #include <utility>
 #include "board.hpp"
 #include "cell.hpp"
+#include "color.hpp"
 
 namespace c4
 {
@@ -54,7 +57,6 @@ namespace c4
 		std::vector<cell*> returned{static_cast<std::size_t>(this->width_)};
 		for (int i = 0; i < this->width_; i++)
 		{
-
 			returned[i] = &(this->cells_[start+i]);
 		}
 		return returned;
@@ -71,10 +73,8 @@ namespace c4
 		return returned;
 	}	
 
-	//TODO(Katie)
 	auto board::get_diagonal(const int row, int column, diagonal_direction direction) -> std::vector<cell*> //NOLINT
 	{
-		std::vector<cell*> diagonal{static_cast<size_t>(std::min(width_, height_)), nullptr};
 		auto quadrants = this->get_quadrants(row, column);
 		int q_1;
 		int q_2;
@@ -94,14 +94,15 @@ namespace c4
 			direction_sign = -1;
 			difference = this->width_ - 1;
 		}
+		std::vector<cell*> diagonal{static_cast<size_t>(q_1 + q_2 + 1), nullptr};
 		auto center = q_1;
 		auto center_position = position_from_coordinates(row, column);
-		diagonal[center] = &this->cells_[center_position];
-		for (int i = 0; i < q_1; i--)
+		diagonal[center] = &(this->cells_[center_position]);
+		for (int i = 1; i <= q_1; i++)
 		{
-			diagonal[center - 1 - i] = &this->cells_[center_position - (difference * i)];
+			diagonal[center - i] = &this->cells_[center_position - (difference * i)];
 		}
-		for (int i = 1; i < q_2; i++)
+		for (int i = 1; i <= q_2; i++)
 		{
 			diagonal[center + i] = &this->cells_[center_position + (difference * i)];
 		}
@@ -131,16 +132,16 @@ namespace c4
 	}
 
 	auto board::get_quadrants(const int row, int column) const -> std::array<int, 4UL> 
-	{
+{
 		std::array<int, 4UL> returned {0, 0, 0, 0};
-		std::array y = {row,		this->height_ - row};
-		std::array x = {column,		this->width_ - column};
+		std::array x = {row,		std::max(this->width_ - (row + 1), 0)};
+		std::array y = {column,		std::max(this->height_ - (column + 1), 0)};
 		//NOLINTBEGIN(bugprone-narrowing-conversions)
 		returned[0] = std::min(y[0], x[0]);
 		returned[1] = std::min(y[0], x[1]);
 		returned[2] = std::min(y[1], x[0]);
 		returned[3] = std::min(y[1], x[1]);
-		//NOLINTEND(bugprone-narrowing-conversions)
+	//NOLINTEND(bugprone-narrowing-conversions)
 		return returned;
 	}
 
@@ -154,5 +155,86 @@ namespace c4
 	auto board::position_from_coordinates(const unsigned int row, unsigned int column) const -> unsigned int
 	{
 		return this->width_ * column + row;
+	}
+
+	void board::print_board()
+	{
+		auto numbers_stream = std::ostringstream{};
+		numbers_stream << board_characters::Empty;
+
+		auto line_stream = std::ostringstream{};
+		line_stream << board_characters::Corner;
+		for(int i = 0; i < this->width_; i++)
+		{
+			line_stream << board_characters::Horizontal;
+			numbers_stream << i + 1;
+		}
+		line_stream << board_characters::Corner;
+		numbers_stream << board_characters::Empty;
+
+		const std::string horizontal_line = line_stream.str();
+		const std::string number_line = numbers_stream.str();
+
+		std::vector<std::string> lines{};
+		lines.emplace_back(number_line);
+		lines.emplace_back(horizontal_line);
+		auto x_color = color::colored_str{color::const_colors::Red};
+		auto o_color = color::colored_str{color::const_colors::Blue};
+		for(int i = 1; i <= this->height_; i++)
+		{
+			auto row_stream = std::ostringstream{};
+			row_stream << board_characters::Vertical;
+			auto row = this->get_row(i - 1);
+			for (auto* cell : row)
+			{
+				auto cell_content = cell->get_cell_content();
+				if(cell_content != cell_content::Empty)
+				{
+					//std::cout << "Cell Content: " << static_cast<int>(cell_content) << std::endl;
+					row_stream << ((cell_content == cell_content::X)
+						? x_color.colorize_str("X")
+						: o_color.colorize_str("O"));
+				}
+				else
+				{
+					row_stream << board_characters::Empty;
+				}
+			}
+			row_stream << board_characters::Vertical;
+			lines.emplace_back(row_stream.str());
+		}
+		lines.emplace_back(horizontal_line);
+
+		for (auto& line : lines)
+		{
+			std::cout << line << std::endl;
+		}
+	}
+
+	auto board::place_in_column(unsigned int column, cell_content content) -> std::pair<bool, std::pair<int, int>>
+	{
+		if (column >= this->width_)
+		{
+			return {false, {0, 0}};
+		}
+		auto m_column = this->get_column(static_cast<int>(column));
+		auto last_free_index = -1;
+		for (int i = 0; i < this->height_; i++)
+		{
+			if (m_column[i]->get_cell_content() == cell_content::Empty)
+			{
+				last_free_index = i;
+			}
+			else
+			{
+				break;
+			}
+		}
+		if(last_free_index == -1)
+		{
+			return {false, {0, 0}};
+		}
+		this->set_value({column, last_free_index}, content);
+		return {true, {column, last_free_index}};
 	}
 };

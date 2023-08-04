@@ -21,5 +21,4 @@ namespace c4
 	{
 		PAUSE_CMD
 	}
-
 }
