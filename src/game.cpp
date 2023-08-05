@@ -1,10 +1,6 @@
 #include "game.hpp"
-#include "board.hpp"
-#include "cell.hpp"
-#include "player_pair.hpp"
-#include "global.hpp"
 #include "color.hpp"
-#include "token.hpp"
+#include "global.hpp"
 #include <algorithm>
 #include <cctype>
 #include <iostream>
@@ -17,6 +13,7 @@
 
 void c4::init()
 {
+	intro();
 	color::colored_str::color_prompt();
 	game();
 };
@@ -60,6 +57,7 @@ auto c4::input_prompt(player& plr, board& p_board) -> std::pair<int, int>
 	std::pair position = {0, 0};
 	while(true)
 	{
+		std::cout << "> ";
 		std::string input;
 		std::cin >> input;
 		std::stringstream ss(input);
@@ -96,6 +94,10 @@ auto c4::scores_handler(score&& p_score) -> std::array<score, 5>
 
 auto c4::main_loop(player_pair& players, board& p_board) -> bool
 {
+	val green = color::colored_str{color::const_colors::Green};
+	val red = color::colored_str{color::const_colors::Red};
+	val pink = color::colored_str{color::const_colors::Magenta};
+
 	var has_player_won = false;
 	var ended_in_tie = false;
 	var current_player = 0;
@@ -134,12 +136,15 @@ auto c4::main_loop(player_pair& players, board& p_board) -> bool
 	{
 		score = p_board.get_score();
 		current_player = (current_player + 1) % 2;
-		std::cout << players[current_player].name() << " won!, Congratulations" << '\n';
+		std::cout << 
+			pink.colorize_str(players[current_player].name().c_str())
+			<< " won!, Congratulations" << '\n';
 	}
 	auto scores = scores_handler(c4::score(players[current_player].name(), score));
 	std::cout << "Score: " << score << '\n';
 	print_scores(std::move(scores));
-	std::cout << "Do you wish to play again? [Y] or [N]: " << '\n';
+	std::cout << "Do you wish to play again? " << green.colorize_str("[Y]") << " or " << red.colorize_str("[N]") << " : " << '\n';
+	std::cout << "> ";
 	auto play_again = false;
 	auto answer = false;
 	while(!answer)
@@ -171,4 +176,12 @@ void c4::print_scores(std::array<score, 5>&& scores)
 void c4::run_game()
 {
 	init();
+}
+
+void c4::intro()
+{
+	clear_console();
+	std::cout << FigletTitle;
+	std::cout << "Katherine C. - github.com/KatieUmbra - katherine@kaytea.dev - 2023" << '\n';
+	wait_for_input();
 }

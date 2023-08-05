@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
 set(CMAKE_BUILD_TYPE DEBUG)
-set(CMAKE_CXX_FLAGS "-I${CMAKE_SOURCE_DIR}/include -stdlib=libc++ -fsanitize=address")
+set(CMAKE_CXX_FLAGS "-I${CMAKE_SOURCE_DIR}/include -stdlib=libc++")
 
 # CMake config
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -35,7 +35,8 @@ set(HEADERS	include/color.hpp
 			include/token.hpp
 			include/board.hpp
 			include/cell.hpp
-			include/scores.hpp)
+			include/scores.hpp
+			include/figlet.hpp)
 
 set(PRECOMPILED_HEADERS		include/pch.hpp
 							include/pch_tomlplusplus.hpp)

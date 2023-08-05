@@ -85,6 +85,7 @@ namespace c4
 			<< o
 			<<":" 
 			<< std::endl;
+		std::cout << "> ";
 		std::string choice;
 		std::cin >> choice;
 		std::transform(choice.begin(), choice.end(), choice.begin(), ::toupper);
@@ -111,6 +112,7 @@ namespace c4
 			<< player_id
 			<< ", What's your name?: "
 			<< std::endl;
+		std::cout << "> ";
 		std::cin >> returned_value;
 		return returned_value;
 	}
