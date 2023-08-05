@@ -42,5 +42,6 @@ namespace c4
 		constexpr char Vertical = '|';
 		constexpr char Horizontal = '-';
 		constexpr char Empty = ' ';
+		constexpr auto Spacer = "            ";
 	}
 }

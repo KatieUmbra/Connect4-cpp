@@ -1,5 +1,4 @@
 #include "color.hpp"
-
 #include <algorithm>
 #include <array>
 #include <cctype>
@@ -116,14 +115,27 @@ namespace c4::color
 		return str;
 	}
 
+	auto colored_str::colorize_char(char c) const -> std::string
+	{
+		if(set_code)
+		{
+			std::string new_str(complete_code_);
+			new_str.append(std::string{c});
+			new_str.append(reset_code_);
+			return new_str;
+		}
+		return static_cast<std::string>(&c);
+	}
+
 	void colored_str::color_prompt()
 	{
+		clear_console();
 		if (!set_code)
 		{
 			std::array<std::pair<std::string, code>, 3> prompts = {
-				std::pair("\033[38;2;255;105;190m test \033[0m", code::C033),
-				std::pair("\e[38;2;255;105;190m test \e[0m", code::Ce),
-				std::pair("\x1b[38;2;255;105;190m test \x1b[0m", code::Cx1b)
+				std::pair("\033[38;2;255;105;190m test \033[0m",	code::C033),
+				std::pair("\e[38;2;255;105;190m test \e[0m",		code::Ce),	
+				std::pair("\x1b[38;2;255;105;190m test \x1b[0m",	code::Cx1b)
 			};
 			for (const auto& [fst, snd] : prompts)
 			{
@@ -132,6 +144,7 @@ namespace c4::color
 				while (answer != "Y" && answer != "N")
 				{
 					std::cout << "Please answer [Y] or [N] :" << std::endl;
+					std::cout << "> ";
 					std::cin >> answer;
 					std::transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
 				}

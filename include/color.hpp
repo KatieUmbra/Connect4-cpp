@@ -1,6 +1,8 @@
 #pragma once
 
-#include <pch.hpp>
+#include "global.hpp"
+#include "pch.hpp"
+#include <string>
 #include <unordered_map>
 
 #define CONST_COLOR inline const rgb
@@ -40,6 +42,7 @@ namespace c4::color
 		explicit colored_str(const rgb&);
 		explicit colored_str(int);
 		void colorize_str(std::string&) const;
+		[[nodiscard]]auto colorize_char(char) const -> std::string;
 		auto colorize_str(const char*) const -> std::string;
 		static void color_prompt();
 	};

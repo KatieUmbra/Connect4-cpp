@@ -159,17 +159,22 @@ namespace c4
 
 	void board::print_board()
 	{
+		auto frame_color = color::colored_str{color::const_colors::Yellow};
+		auto number_color = color::colored_str{color::const_colors::Aqua};
+		
 		auto numbers_stream = std::ostringstream{};
+		numbers_stream << board_characters::Spacer;
 		numbers_stream << board_characters::Empty;
 
 		auto line_stream = std::ostringstream{};
-		line_stream << board_characters::Corner;
+		line_stream << board_characters::Spacer;
+		line_stream << frame_color.colorize_char(board_characters::Corner);
 		for(int i = 0; i < this->width_; i++)
 		{
-			line_stream << board_characters::Horizontal;
+			line_stream << frame_color.colorize_char(board_characters::Horizontal);
 			numbers_stream << i + 1;
 		}
-		line_stream << board_characters::Corner;
+		line_stream << frame_color.colorize_char(board_characters::Corner);
 		numbers_stream << board_characters::Empty;
 
 		const std::string horizontal_line = line_stream.str();
@@ -183,7 +188,8 @@ namespace c4
 		for(int i = 1; i <= this->height_; i++)
 		{
 			auto row_stream = std::ostringstream{};
-			row_stream << board_characters::Vertical;
+			row_stream << board_characters::Spacer;
+			row_stream << frame_color.colorize_char(board_characters::Vertical);
 			auto row = this->get_row(i - 1);
 			for (auto* cell : row)
 			{
@@ -200,7 +206,7 @@ namespace c4
 					row_stream << board_characters::Empty;
 				}
 			}
-			row_stream << board_characters::Vertical;
+			row_stream << frame_color.colorize_char(board_characters::Vertical);
 			lines.emplace_back(row_stream.str());
 		}
 		lines.emplace_back(horizontal_line);
