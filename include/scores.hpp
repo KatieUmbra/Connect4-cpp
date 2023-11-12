@@ -9,8 +9,8 @@
 #include <sstream>
 #include <string>
 #include <string_view>
-#include <toml++/impl/node_view.h>
-#include <toml++/impl/table.h>
+#include "toml++/impl/node_view.hpp"
+#include "toml++/impl/table.hpp"
 
 #ifdef _WIN32
 #define HOME "USERPROFILE"
@@ -43,7 +43,7 @@ namespace c4
 		}
 		return false;
 	}
-	inline auto read_file_into_string(std::string_view path) -> std::string
+	inline auto read_file_into_string(const char* path) -> std::string
 	{
 		auto ss = std::ostringstream{};
 		std::ifstream input_file{path};

@@ -1,7 +1,7 @@
 ﻿// ReSharper disable CppRedundantAccessSpecifier
 #pragma once
 
-#include <pch.hpp>
+#include "pch.hpp"
 #include "token.hpp"
 
 namespace c4

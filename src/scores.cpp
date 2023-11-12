@@ -5,9 +5,6 @@
 #include <fstream>
 #include <iterator>
 #include <string_view>
-#include <toml++/impl/node_view.h>
-#include <toml++/impl/parser.h>
-#include <toml++/impl/table.h>
 #include <utility>
 #include <vector>
 #include "pch.hpp"
@@ -23,8 +20,8 @@ namespace c4
 		{
 			try
 			{
-				auto str_table = c4::read_file_into_string(file_name);
-				toml::table tbl = toml::parse(str_table);
+				auto str_table = c4::read_file_into_string(file_name.c_str());
+				auto result = toml::parse(str_table);
 				return pair(0, "File exists and is valid!");
 			}
 			catch(const toml::parse_error& err)
@@ -100,7 +97,7 @@ namespace c4
 				scores.emplace_back(empty_score);
 			}
 		}
-		std::move(scores.begin(), scores.begin() + 5z, returned_arr.begin());
+		std::move(scores.begin(), scores.begin() + 5, returned_arr.begin());
 		return returned_arr;
 	}
 

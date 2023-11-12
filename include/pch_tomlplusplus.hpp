@@ -1,1 +1,2 @@
-#include<toml++/toml.h>
+#define TOML_EXCEPTIONS 0
+#include "toml++/toml.hpp"
