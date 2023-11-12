@@ -2,6 +2,10 @@
 build/
 build
 
+# Ignored
+.vscode
+.vs
+
 # Clang tidy
 .clang-tidy
 
